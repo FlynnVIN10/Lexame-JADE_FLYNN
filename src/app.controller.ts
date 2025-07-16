@@ -1,32 +1,31 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { AppService } from './app.service.js';
+import { Controller, Get, Post, Body, Param, OnApplicationShutdown } from '@nestjs/common';
+import { AppService } from './app.service';
 
-@Controller('ipfs-api')
-export class AppController {
+@Controller()
+export class AppController implements OnApplicationShutdown {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  async getHeliaVersion(): Promise<string> {
-    const helia = await this.appService.getHelia();
-    return 'Helia is running, PeerId ' + helia.libp2p.peerId.toString();
+  getHello(): Promise<string> {
+    return this.appService.getHello();
   }
 
-  @Post('add')
-  async addFile(@Body() file: any): Promise<string> {
-    return await this.appService.addFile(file);
-  }
+  // @Post('addFile')
+  // addFile(@Body() file: any): Promise<string> {
+  //   return this.appService.addFile(file);
+  // }
 
-  @Get('cat/:hash')
-  async getFile(@Param('hash') hash: string): Promise<string> {
-    return await this.appService.getFile(hash);
-  }
+  // @Get('getFile/:hash')
+  // getFile(@Param('hash') hash: string): Promise<any> {
+  //   return this.appService.getFile(hash);
+  // }
 
-  @Post('ls')
-  async listFiles(@Body() options: any): Promise<string> {
-    return await this.appService.listFiles(options);
-  }
+  // @Get('listFiles')
+  // listFiles(@Body() options: any): Promise<any> {
+  //   return this.appService.listFiles(options);
+  // }
 
-  async onApplicationShutdown(): Promise<void> {
-    await this.appService.onApplicationShutdown();
+  async onApplicationShutdown() {
+    // await this.appService.onApplicationShutdown();
   }
 }
