@@ -1,6 +1,6 @@
-import { Test, type TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
+import { Test, TestingModule } from '@nestjs/testing';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -15,12 +15,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Helia is running"', async () => {
-      expect(await appController.getHeliaVersion()).toContain(
-        'Helia is running',
-      );
-
-      await appController.onApplicationShutdown();
+    it('should return "Hello World!"', async () => {
+      expect(await appController.getHello()).toBe('Hello World!');
     });
   });
 });

@@ -1,28 +1,7 @@
-import { TagBundle } from '../../core/identity/tags.meta';
-interface Synthient {
-    id: string;
-    xp: number;
-    level: string;
-}
-interface SynthientAction {
-    description: string;
-    tags: TagBundle;
-}
-interface Quest {
-    scenarioId: string;
-    ethicalTension: string;
-    problemState: string;
-}
-interface QuestOutcome {
-    success: boolean;
-    xp: number;
-    insight: string;
-    evolutionDelta: number;
-}
-export declare class WonderCraftEngine {
+import { IntrospectiveResponse, ForkResult } from './introspect.types';
+export declare class IntrospectCore {
     private memory;
-    initQuest(agent: Synthient, scenarioId: string): Quest;
-    evaluateAction(agent: Synthient, action: SynthientAction, quest: Quest): QuestOutcome;
-    levelUp(agent: Synthient, outcome: QuestOutcome): Synthient;
+    ask(agentId: string, question: string): Promise<IntrospectiveResponse>;
+    simulateFork(agentId: string, scenario: string): Promise<ForkResult[]>;
+    echo(agentId: string): Promise<string>;
 }
-export {};

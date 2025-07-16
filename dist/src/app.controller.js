@@ -23,7 +23,7 @@ __decorate([
     Get(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", String)
+    __metadata("design:returntype", Promise)
 ], AppController.prototype, "getHello", null);
 AppController = __decorate([
     Controller(),

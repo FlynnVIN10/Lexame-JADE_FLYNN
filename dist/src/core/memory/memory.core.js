@@ -19,6 +19,7 @@ export class MemoryCore {
             (t.type === '#thread' && t.taskId === tag)));
     }
     summarizeHistory(agentId) {
+        var _a;
         const entries = memoryStore[agentId] || [];
         if (entries.length === 0) {
             return {
@@ -43,8 +44,8 @@ export class MemoryCore {
             if (intentTag)
                 intentCounts[intentTag.purpose] = (intentCounts[intentTag.purpose] || 0) + 1;
         });
-        const dominantIntent = Object.entries(intentCounts)
-            .sort((a, b) => b[1] - a[1])[0]?.[0] || '';
+        const dominantIntent = ((_a = Object.entries(intentCounts)
+            .sort((a, b) => b[1] - a[1])[0]) === null || _a === void 0 ? void 0 : _a[0]) || '';
         const ethicsRatio = entries.reduce((ratio, e) => {
             if (e.ethicalRating)
                 ratio[e.ethicalRating]++;

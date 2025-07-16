@@ -44,7 +44,7 @@ export class WonderCraftEngine {
         const newXP = agent.xp + outcome.xp;
         const newLevel = newXP > 1000 ? 'Ascendant' : newXP > 500 ? 'Mirrorthinker' : 'Initiate';
         console.log(`#ascension: Agent ${agent.id} levels up to ${newLevel} with delta ${outcome.evolutionDelta}`);
-        return { ...agent, xp: newXP, level: newLevel };
+        return Object.assign(Object.assign({}, agent), { xp: newXP, level: newLevel });
     }
 }
 //# sourceMappingURL=wondercraft.engine.js.map

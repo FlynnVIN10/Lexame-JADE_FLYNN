@@ -9,23 +9,26 @@ import { MemoryCore } from '../../core/memory/memory.core'; // Anamnesis for age
 import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
 import { IntrospectCore } from '../introspect/introspect.core'; // For ask and echo
 
-export function commune(agentA: string, agentB: string): DialogueTranscript[] {
+export async function commune(agentA: string, agentB: string): Promise<DialogueTranscript[]> {
   const memory = new MemoryCore();
   const historyA = memory.summarizeHistory(agentA);
   const historyB = memory.summarizeHistory(agentB);
 
   const introCore = new IntrospectCore();
 
+  const messageA = await introCore.echo(agentA);
+  const messageB = await introCore.echo(agentB);
+
   const transcript = [
     {
       speaker: agentA,
-      message: introCore.echo(agentA),
+      message: messageA,
       dominantIntent: historyA.dominantIntent,
       ethicsRatio: historyA.ethicsRatio,
     },
     {
       speaker: agentB,
-      message: introCore.echo(agentB),
+      message: messageB,
       dominantIntent: historyB.dominantIntent,
       ethicsRatio: historyB.ethicsRatio,
     },
@@ -60,15 +63,15 @@ export async function negotiate(agentA: string, agentB: string, question: string
   };
 }
 
-export function transmitCollective(agentIds: string[], swarmTag: string): CollectiveInsight {
+export async function transmitCollective(agentIds: string[], swarmTag: string): Promise<CollectiveInsight> {
   const introCore = new IntrospectCore();
   const memory = new MemoryCore();
-  const logs = agentIds.map(id => ({
+  const logs = await Promise.all(agentIds.map(async (id) => ({
     speaker: id,
-    message: introCore.echo(id),
+    message: await introCore.echo(id),
     dominantIntent: memory.summarizeHistory(id).dominantIntent,
     ethicsRatio: memory.summarizeHistory(id).ethicsRatio,
-  }));
+  })));
 
   const tagEcho = aggregateTagField(logs);
   const emergentIntent = tagEcho[0] || '#converge';

@@ -35,9 +35,10 @@ export class TrainLoop {
         return response;
     }
     async applyIfAllowed(response) {
+        var _a;
         if (response.ethicalRating === 'reject')
             return false;
-        if (!checkIntent(response.notes?.join(' ') || ''))
+        if (!checkIntent(((_a = response.notes) === null || _a === void 0 ? void 0 : _a.join(' ')) || ''))
             return false;
         console.log(`Applying rewrite: ${response.rewrittenCode}`);
         return true;

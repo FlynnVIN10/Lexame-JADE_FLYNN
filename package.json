@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@helia/unixfs": "^5.0.3",
+    "@libp2p/utils": "^6.7.1",
     "@nestjs/common": "^11.0.12",
     "@nestjs/core": "^11.0.12",
     "@nestjs/platform-express": "^11.0.2",

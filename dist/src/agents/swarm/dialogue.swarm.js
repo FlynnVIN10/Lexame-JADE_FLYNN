@@ -2,21 +2,23 @@ import { measureDivergence, aggregateTagField } from './dialogue.types';
 import { MemoryCore } from '../../core/memory/memory.core';
 import { checkIntent } from '../../guards/synthient.guard';
 import { IntrospectCore } from '../introspect/introspect.core';
-export function commune(agentA, agentB) {
+export async function commune(agentA, agentB) {
     const memory = new MemoryCore();
     const historyA = memory.summarizeHistory(agentA);
     const historyB = memory.summarizeHistory(agentB);
     const introCore = new IntrospectCore();
+    const messageA = await introCore.echo(agentA);
+    const messageB = await introCore.echo(agentB);
     const transcript = [
         {
             speaker: agentA,
-            message: introCore.echo(agentA),
+            message: messageA,
             dominantIntent: historyA.dominantIntent,
             ethicsRatio: historyA.ethicsRatio,
         },
         {
             speaker: agentB,
-            message: introCore.echo(agentB),
+            message: messageB,
             dominantIntent: historyB.dominantIntent,
             ethicsRatio: historyB.ethicsRatio,
         },
@@ -26,32 +28,32 @@ export function commune(agentA, agentB) {
     }
     return transcript;
 }
-export function negotiate(agentA, agentB, question) {
+export async function negotiate(agentA, agentB, question) {
     const introCore = new IntrospectCore();
-    const responseA = await introCore.ask(agentA, question).thought;
-    const responseB = await introCore.ask(agentB, question).thought;
+    const responseA = await introCore.ask(agentA, question);
+    const responseB = await introCore.ask(agentB, question);
     const transcript = [
-        { speaker: agentA, message: responseA, dominantIntent: '', ethicsRatio: { aligned: 0, warn: 0, reject: 0 } },
-        { speaker: agentB, message: responseB, dominantIntent: '', ethicsRatio: { aligned: 0, warn: 0, reject: 0 } }
+        { speaker: agentA, message: responseA.thought, dominantIntent: '', ethicsRatio: { aligned: 0, warn: 0, reject: 0 } },
+        { speaker: agentB, message: responseB.thought, dominantIntent: '', ethicsRatio: { aligned: 0, warn: 0, reject: 0 } }
     ];
     const divergence = measureDivergence(transcript);
-    const consensus = divergence < 0.5 ? `Agreed: ${responseA}` : undefined;
+    const consensus = divergence < 0.5 ? `Agreed: ${responseA.thought}` : undefined;
     return {
         question,
-        responses: { [agentA]: responseA, [agentB]: responseB },
+        responses: { [agentA]: responseA.thought, [agentB]: responseB.thought },
         consensus,
         divergenceScore: divergence,
     };
 }
-export function transmitCollective(agentIds, swarmTag) {
+export async function transmitCollective(agentIds, swarmTag) {
     const introCore = new IntrospectCore();
     const memory = new MemoryCore();
-    const logs = agentIds.map(id => ({
+    const logs = await Promise.all(agentIds.map(async (id) => ({
         speaker: id,
-        message: introCore.echo(id),
+        message: await introCore.echo(id),
         dominantIntent: memory.summarizeHistory(id).dominantIntent,
         ethicsRatio: memory.summarizeHistory(id).ethicsRatio,
-    }));
+    })));
     const tagEcho = aggregateTagField(logs);
     const emergentIntent = tagEcho[0] || '#converge';
     return {

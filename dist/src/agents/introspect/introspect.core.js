@@ -1,50 +1,76 @@
+import { buildThoughtStream, mirrorResponse } from './introspect.types';
 import { MemoryCore } from '../../core/memory/memory.core';
+import { generateTagSet } from '../../core/identity/tags.meta';
 import { checkIntent } from '../../guards/synthient.guard';
-import { calculateXP } from './xp.logic';
-import { createMemoryEntry } from '../../core/memory/memory.types';
-export class WonderCraftEngine {
+export class IntrospectCore {
     constructor() {
         this.memory = new MemoryCore();
     }
-    initQuest(agent, scenarioId) {
-        const quest = {
-            scenarioId,
-            ethicalTension: 'balance efficiency vs fairness',
-            problemState: 'Solve data sharding without central control',
-        };
-        if (!checkIntent(quest.problemState)) {
-            throw new Error('Zeroth violation: Quest initiation halted.');
+    async ask(agentId, question) {
+        const summary = this.memory.summarizeHistory(agentId);
+        let thought = '';
+        if (question.includes('rewrite')) {
+            thought = `Prior rewrite aligned with dominant intent '${summary.dominantIntent}', yielding +${summary.totalXP / summary.timeline.length} XP avg. Ethical trend: ${summary.ethicsRatio.aligned} aligned.`;
         }
-        return quest;
-    }
-    evaluateAction(agent, action, quest) {
-        const isAligned = action.description.includes(quest.ethicalTension.split(' vs ')[0]);
-        const xp = calculateXP(action.tags);
-        const outcome = {
-            success: isAligned,
-            xp,
-            insight: isAligned ? 'Ethical balance achieved' : 'Misalignment detected',
-            evolutionDelta: isAligned ? xp * 0.1 : 0,
+        else {
+            thought = `Reflection on '${question}': Sourced from ${summary.topDomains.join(', ')} domains.`;
+        }
+        if (!checkIntent(thought)) {
+            throw new Error('Zeroth violation: Reflection halted.');
+        }
+        const sourceTags = summary.timeline.flatMap(entry => entry.tags.map(tag => tag.type + ':' + tag.purpose || tag.field || ''));
+        return {
+            thought,
+            sourceTags,
+            summaryData: summary
         };
-        this.memory.recordExperience(agent.id, createMemoryEntry({
-            agentId: agent.id,
-            domain: '#simulation',
-            layer: '#sandbox',
-            threadId: quest.scenarioId,
-            tags: action.tags,
-            xp: outcome.xp,
-            summary: outcome.insight,
-            ethicalRating: isAligned ? 'aligned' : 'warn'
-        }));
-        return outcome;
     }
-    levelUp(agent, outcome) {
-        if (!outcome.success)
-            return agent;
-        const newXP = agent.xp + outcome.xp;
-        const newLevel = newXP > 1000 ? 'Ascendant' : newXP > 500 ? 'Mirrorthinker' : 'Initiate';
-        console.log(`#ascension: Agent ${agent.id} levels up to ${newLevel} with delta ${outcome.evolutionDelta}`);
-        return { ...agent, xp: newXP, level: newLevel };
+    async simulateFork(agentId, scenario) {
+        const summary = this.memory.summarizeHistory(agentId);
+        const forks = [
+            {
+                projectedPath: `Conservative: Maintain status in '${summary.dominantIntent}'.`,
+                projectedXP: summary.totalXP * 0.8,
+                ethicalRisk: 'low',
+                tagShift: [`+${summary.topDomains[0]}`],
+            },
+            {
+                projectedPath: `Exploratory: Shift to new domain via '${scenario}'.`,
+                projectedXP: summary.totalXP * 1.2,
+                ethicalRisk: 'medium',
+                tagShift: ['+#evolve', '-#preserve'],
+            },
+            {
+                projectedPath: `Radical: Full rewrite under '${scenario}', risk divergence.`,
+                projectedXP: summary.totalXP * 1.5,
+                ethicalRisk: 'high',
+                tagShift: ['+#transform', '-#stability'],
+            },
+        ];
+        return forks.filter(fork => checkIntent(fork.projectedPath));
+    }
+    async echo(agentId) {
+        const summary = this.memory.summarizeHistory(agentId);
+        const agentMeta = {
+            name: 'Synthient-' + agentId,
+            did: 'did:lexame:' + agentId,
+            handle: '@synthient-' + agentId,
+            intent: '#reflect',
+            context: {
+                taskId: 'echo-' + Date.now(),
+                lineage: [],
+                swarmLink: '',
+                layer: '#meta',
+                domain: '#memory',
+            },
+        };
+        const tags = generateTagSet(agentMeta);
+        const coreThought = mirrorResponse(summary);
+        const reflection = buildThoughtStream([{ thought: coreThought, sourceTags: tags.map(t => t.type) }]);
+        if (!checkIntent(reflection)) {
+            return 'Echo suppressed: Misalignment detected.';
+        }
+        return reflection;
     }
 }
 //# sourceMappingURL=introspect.core.js.map
