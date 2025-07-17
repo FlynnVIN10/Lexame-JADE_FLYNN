@@ -6,6 +6,6 @@ async function bootstrap() {
   await app.listen(3000);
 }
 bootstrap().catch(err => {
-  console.error(err); // eslint-disable-line no-console
+  console.error(err);
   process.exit(1);
 });
