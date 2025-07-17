@@ -47,7 +47,7 @@ export async function simulatePetalsResponse(request: PetalsRequest): Promise<Pe
     rewrittenCode: request.code,        // echo back for now
     trustScore:    0.9,
     ethicalRating: 'aligned',
-    notes:         ['Stub: auto-approved']
+    notes:         ['Stub: auto-approved'],
   };
 }
 
