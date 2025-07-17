@@ -6,7 +6,7 @@
  * Defines types for self-reflection, forking, and symbolic processing.
  */
 
-import { MemorySummary } from 'core/memory/memory.types';
+import { MemorySummary } from '../../core/memory/memory.types';
 
 /** Response to an introspective query */
 export interface IntrospectiveResponse {

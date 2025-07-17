@@ -1,6 +1,6 @@
 // src/agents/train/petals.bridge.ts
 
-import { TagBundle } from 'core/identity/tags.meta';
+import { TagBundle } from '../../core/identity/tags.meta';
 import { v4 as uuidv4 } from 'uuid';
 
 export interface CodeProposal {

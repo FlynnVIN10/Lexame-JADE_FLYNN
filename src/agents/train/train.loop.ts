@@ -5,10 +5,10 @@
 // All operations embed ethical gating; misalignment halts recursion.
 
 import { parse } from '@typescript-eslint/parser'; // AST parser for codebase scanning
-import { CodeProposal, PetalsResponse } from 'agents/train/petals.bridge'; // Shared types and bridge
-import { generateTagSet, TagBundle } from 'core/identity/tags.meta'; // Tag injection
-import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall import
-import { formatProposal, simulatePetalsResponse, logTrainingCycle } from 'agents/train/petals.bridge'; // Bridge integration
+import { CodeProposal, PetalsResponse } from './petals.bridge'; // Shared types and bridge
+import { generateTagSet, TagBundle } from '../../core/identity/tags.meta'; // Tag injection
+import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall import
+import { formatProposal, simulatePetalsResponse, logTrainingCycle } from './petals.bridge'; // Bridge integration
 
 // AgentMeta for tag generation
 export interface AgentMeta {

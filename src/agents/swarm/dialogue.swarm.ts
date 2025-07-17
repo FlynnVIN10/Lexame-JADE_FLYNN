@@ -4,10 +4,10 @@
 // Zeroth Principle: Only with good intent and a good heart does the system function.
 // Dialogues enforce consensus gating; entropy exceeding threshold halts swarm.
 
-import { DialogueTranscript, SwarmResolution, CollectiveInsight, measureDivergence, aggregateTagField } from 'agents/swarm/dialogue.types'; // Schema import
-import { MemoryCore } from 'core/memory/memory.core'; // Anamnesis for agent state
-import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall
-import { IntrospectCore } from 'agents/introspect/introspect.core'; // For ask and echo
+import { DialogueTranscript, SwarmResolution, CollectiveInsight, measureDivergence, aggregateTagField } from './dialogue.types'; // Schema import
+import { MemoryCore } from '../../core/memory/memory.core'; // Anamnesis for agent state
+import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
+import { IntrospectCore } from '../introspect/introspect.core'; // For ask and echo
 
 export async function commune(agentA: string, agentB: string): Promise<DialogueTranscript[]> {
   const memory = new MemoryCore();
