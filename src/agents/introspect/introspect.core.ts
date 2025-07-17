@@ -4,10 +4,10 @@
 // Zeroth Principle: Only with good intent and a good heart does the system function.
 // All reflections enforce alignment; deceptive rationalizations auto-halt.
 
-import { IntrospectiveResponse, ForkResult, buildThoughtStream, mirrorResponse } from './introspect.types'; // Schema import
-import { MemoryCore } from '../../core/memory/memory.core'; // Anamnesis integration
-import { generateTagSet } from '../../core/identity/tags.meta'; // Tag dependency
-import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall import
+import { IntrospectiveResponse, ForkResult, buildThoughtStream, mirrorResponse } from 'agents/introspect/introspect.types'; // Schema import
+import { MemoryCore } from 'core/memory/memory.core'; // Anamnesis integration
+import { generateTagSet } from 'core/identity/tags.meta'; // Tag dependency
+import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall import
 
 export class IntrospectCore {
   private memory = new MemoryCore();

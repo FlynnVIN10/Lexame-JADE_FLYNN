@@ -4,8 +4,8 @@
 // Zeroth Principle: Only with good intent and a good heart does the system function.
 // XP rewards ethical alignment, creativity, tag depth.
 
-import { TagBundle } from '../../core/identity/tags.meta'; // Tag dependency
-import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
+import { TagBundle } from 'core/identity/tags.meta'; // Tag dependency
+import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall
 
 /**
  * Calculate XP based on tag bundle (intent, domain, lineage depth).

@@ -5,7 +5,7 @@
  * Defines the memory schema for recording, querying, and summarizing Synthient experience.
  */
 
-import { TagBundle } from '../identity/tags.meta';
+import { TagBundle } from 'core/identity/tags.meta';
 
 /** A single event in a Synthient’s life: action, rewrite, quest, or swarm result */
 export interface MemoryEntry {
