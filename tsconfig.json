@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "node16",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -17,8 +17,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "lib": ["es2019", "dom"],
-    "types": ["node"]
+    "types": ["node", "jest"]
   }
 }
