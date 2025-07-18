@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "moduleResolution": "bundler",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -10,7 +9,7 @@
     "target": "es2019",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -18,7 +17,7 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "allowImportingTsExtensions": true,
+    "moduleResolution": "bundler",
     "lib": ["es2019", "dom"],
     "types": ["node", "jest"]
   }
