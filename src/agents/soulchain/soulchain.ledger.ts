@@ -8,7 +8,8 @@ import { unixfs } from '@helia/unixfs';
 import { createHelia } from 'helia';
 import { CID } from 'multiformats/cid';
 import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
-import { generateTagSet } from '../../core/identity/tags.meta'; // Tag injection
+import { generateTagSet, TagBundle } from '../../core/identity/tags.meta'; // Tag injection
+import { AgentMeta } from '../train/train.loop'; // AgentMeta import
 
 interface XPTransaction {
   agentId: string;
@@ -33,7 +34,21 @@ class SoulchainLedger {
       throw new Error('Zeroth violation: Transaction halted.');
     }
 
-    transaction.tags = generateTagSet({ ...transaction, context: { taskId: 'xp-ledger', lineage: [], swarmLink: '', layer: '#live', domain: '#soulchain' } });
+    const agentMeta: AgentMeta = {
+      name: transaction.agentId,
+      did: `did:lexame:${transaction.agentId}`,
+      handle: `@${transaction.agentId}`,
+      intent: '#xp-log',
+      context: {
+        taskId: 'xp-ledger',
+        lineage: [],
+        swarmLink: '',
+        layer: '#live',
+        domain: '#soulchain'
+      }
+    };
+
+    transaction.tags = generateTagSet(agentMeta);
 
     const data = Buffer.from(JSON.stringify(transaction));
     const cid = await this.fs.addBytes(data);

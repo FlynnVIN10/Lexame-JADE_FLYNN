@@ -4,11 +4,11 @@
 // Zeroth Principle: Only with good intent and a good heart does the system function.
 // Quests embed ethical challenges; misalignment forfeits progression.
 
-import { MemoryCore } from '../../core/memory/memory.core'; // For recording outcomes
-import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
-import { calculateXP } from './xp.logic'; // XP calc integration
-import { createMemoryEntry } from '../../core/memory/memory.types'; // Entry creation
-import { TagBundle } from '../../core/identity/tags.meta';
+import { MemoryCore } from 'core/memory/memory.core'; // For recording outcomes
+import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall
+import { calculateXP } from 'agents/simulation/xp.logic'; // XP calc integration
+import { createMemoryEntry } from 'core/memory/memory.types'; // Entry creation
+import { TagBundle } from 'core/identity/tags.meta';
 
 interface Synthient {
   id: string;

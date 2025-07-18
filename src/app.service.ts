@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { createHelia } from 'helia';
+import { unixfs } from '@helia/unixfs';
+import { CID } from 'multiformats/cid';
 
 interface DirectoryEntry {
   name: string;
@@ -14,10 +17,6 @@ export class AppService {
   }
 
   async listDirectory(cid: string): Promise<DirectoryEntry[]> {
-    const { createHelia } = await import('helia');
-    const { unixfs } = await import('@helia/unixfs');
-    const { CID } = await import('multiformats/cid');
-
     const helia = await createHelia();
     const fs = unixfs(helia);
 
