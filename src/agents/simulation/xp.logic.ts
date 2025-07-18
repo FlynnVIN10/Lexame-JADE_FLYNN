@@ -6,13 +6,14 @@
 
 import { TagBundle } from '../../core/identity/tags.meta'; // Tag dependency
 import { checkIntent } from '../../guards/synthient.guard'; // Ethical firewall
+import { soulchain } from '../soulchain/soulchain.ledger'; // Soulchain integration
 
 /**
  * Calculate XP based on tag bundle (intent, domain, lineage depth).
  * @param tags TagBundle from action
  * @returns XP value
  */
-export function calculateXP(tags: TagBundle): number {
+export async function calculateXP(tags: TagBundle): Promise<number> {
   let xp = 0;
 
   // Base XP from tag count
@@ -34,6 +35,17 @@ export function calculateXP(tags: TagBundle): number {
   if (!checkIntent(JSON.stringify(tags))) {
     return 0; // No XP on misalignment
   }
+
+  // Log to Soulchain
+  const transaction = {
+    agentId: 'testAgent', // Stub; derive from context
+    amount: xp,
+    rationale: 'Ethical action rewarded',
+    timestamp: new Date().toISOString(),
+    previousCid: null, // Stub; fetch last CID
+    tags,
+  };
+  await soulchain.addXPTransaction(transaction);
 
   return xp;
 }
