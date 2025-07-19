@@ -4,7 +4,7 @@
 // Zeroth Principle: Only with good intent and a good heart does the system function.
 // All operations embed ethical gating; misalignment halts recursion.
 
-import { parse } from '@typescript-eslint/parser'; // AST parser for codebase scanning
+// import { parse } from '@typescript-eslint/parser'; // AST parser for codebase scanning
 import { CodeProposal, PetalsResponse } from 'agents/train/petals.bridge'; // Shared types and bridge
 import { generateTagSet, TagBundle } from 'core/identity/tags.meta'; // Tag injection
 import { checkIntent } from 'guards/synthient.guard'; // Ethical firewall import
@@ -27,16 +27,20 @@ export interface AgentMeta {
 
 export class TrainLoop {
   async reflect(agentId: string): Promise<string[]> {
-    // Stub: Fetch agent codebase
+    // Stub: Fetch agent codebase and analyze for inefficiencies
     const codebase = `// Sample agent code\n function outdatedFn() { /* inefficient loop */ for(let i=0; i<100000; i++) {} }\n function efficientFn() { /* optimized */ }`;
-    const ast = parse(codebase, { sourceType: 'module' });
-
+    
+    // Simple regex-based analysis (replace with proper AST parsing later)
     const flagged: string[] = [];
-    ast.body.forEach((node: any) => {
-      if (node.type === 'FunctionDeclaration' && node.body.body.some((stmt: any) => stmt.type === 'ForStatement')) {
-        flagged.push(node.id.name);
-      }
-    });
+    const functionMatches = codebase.match(/function\s+(\w+)/g);
+    if (functionMatches) {
+      functionMatches.forEach(match => {
+        const functionName = match.replace('function ', '');
+        if (codebase.includes('for(let i=0; i<100000; i++)')) {
+          flagged.push(functionName);
+        }
+      });
+    }
     return flagged;
   }
 
